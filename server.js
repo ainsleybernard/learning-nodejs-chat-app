@@ -9,28 +9,28 @@ var app = express()
 var http = require('http').Server(app)
 var io = require('socket.io')(http)
 
-app.use(express.static(__dirname)) 
+app.use(express.static(__dirname))
 //this lets body parser know that we expect JSON to be coming in with our HTTP request.
 app.use(bodyParser.json())
 //add this because what comes in from the browser is URL encoded, so we must setup body parser to support this.
-app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 
-var messages = [{name:'bob', message: 'hi'},{name:'sam',message:'hi'}]
+var messages = [{ name: 'bob', message: 'hi' }, { name: 'sam', message: 'hi' }]
 
-app.get('/messages',(req,res) =>{
+app.get('/messages', (req, res) => {
     res.send(messages)
 })
 
-app.post('/messages',(req,res) =>{
-    console.log(req.body)
+app.post('/messages', (req, res) => {
     messages.push(req.body)
+    io.emit('message',req.body)
     res.sendStatus(200)
 })
 
-io.on('connection',(socket)=>{
+io.on('connection', (socket) => {
     console.log('user connected')
 })
 
-var server = http.listen(3000, ()=>{
+var server = http.listen(3000, () => {
     console.log('server is listening on port', server.address().port)
 });
