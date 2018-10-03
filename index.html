@@ -1,28 +1,42 @@
 <!doctype html>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-    crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
-<script src="/socket.io/socket.io.js"></script>
 
-<div class="container">
-    <br>
-    <div class="jumbotron">
-        <h1 class="display-4"> Send Message</h1>
-        <br>
-        <input id="name" class="form-control" placeholder="Name">
-        <br>
-        <textarea id="message" class="form-control" placeholder="Message"></textarea>
-        <br>
-        <button id="send" class="btn btn-success">Send</button>
-    </div>
-    <div id="messages">
 
+
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <br>
+        <div class="jumbotron">
+            <h1 class="display-4"> Send Message</h1>
+            <br>
+            <input id="name" class="form-control" placeholder="Name">
+            <br>
+            <textarea id="message" class="form-control" placeholder="Message"></textarea>
+            <br>
+            <button id="send" class="btn btn-success">Send</button>
+        </div>
+        <div id="messages">
+
+        </div>
     </div>
-</div>
+</body>
+
+</html>
+
 
 <script>
     //this initialization will also try to make a connection to the socket.io server the the same url that the current page is beinghosted on.
@@ -37,7 +51,9 @@
         GetMessages()
     })
 
-    function addMessages(message) {
+    socket.on('message', addMessage)
+
+    function addMessage(message) {
 
         $('#messages').append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
     }
@@ -47,14 +63,14 @@
 
 
 
-            //since the signature of our addMessages function matches the signature of the callback we're supplying, we don't need a callback at all.
-            //We can simply call forEach and then supply the name of our function, addMessages.
+            //since the signature of our addMessage function matches the signature of the callback we're supplying, we don't need a callback at all.
+            //We can simply call forEach and then supply the name of our function, addMessage.
 
             // data.forEach(element => {
-            //     addMessages(element)
+            //     addMessage(element)
             // });
 
-            data.forEach(addMessages)
+            data.forEach(addMessage)
         })
     }
 
