@@ -37,6 +37,15 @@ app.get('/messages', (req, res) => {
     })
 })
 
+//user parameter
+app.get('/messages/:user', (req, res) => {
+    var user = req.params.user
+    //if the name matches the user.
+    Message.find({name:user}, (err, messages) => {
+        res.send(messages)
+
+    })
+})
 
 // Example of nested callback hell
 // app.post('/messages', (req, res) => {
@@ -98,7 +107,6 @@ app.get('/messages', (req, res) => {
 
     try {
 
-        throw 'some error'
         var message = new Message(req.body)
 
         var savedMessage = await message.save()
